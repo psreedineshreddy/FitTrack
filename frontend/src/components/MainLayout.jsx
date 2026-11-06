@@ -1,3 +1,4 @@
+
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   Activity,
@@ -7,6 +8,10 @@ import {
   Target,
   BarChart3,
   LogOut,
+  CalendarDays,
+  BookOpen,
+  Flame,
+  Award,
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
@@ -21,56 +26,63 @@ export default function MainLayout() {
     navigate("/login");
   };
 
+  const navItems = [
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/workouts", label: "Workouts", icon: Dumbbell },
+    { to: "/workout-plans", label: "Workout Plans", icon: CalendarDays },
+    { to: "/exercises", label: "Exercise Library", icon: BookOpen },
+    { to: "/progress", label: "Progress", icon: TrendingUp },
+    { to: "/goals", label: "Goals", icon: Target },
+    { to: "/streaks", label: "Streaks", icon: Flame },
+    { to: "/badges", label: "Achievements", icon: Award },
+    { to: "/reports", label: "Reports", icon: BarChart3 },
+  ];
+
   return (
-    <>
-      <div className="dashboard-placeholder app-header-shell">
-        <header>
-          <div className="brand">
-            <span className="brand-icon">
-              <Activity size={23} />
-            </span>
-            FITTRACK
-          </div>
+    <div className="fittrack-layout">
+      <header className="fittrack-topbar">
+        <div className="brand">
+          <span className="brand-icon">
+            <Activity size={25} />
+          </span>
+          FITTRACK
+        </div>
+
+        <div className="fittrack-topbar-actions">
+          <Notifications />
+
+          <button className="secondary-button" onClick={handleLogout}>
+            <LogOut size={17} />
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <div className="fittrack-body">
+        <aside className="fittrack-sidebar">
+          <div className="sidebar-label">MAIN MENU</div>
 
           <nav>
-            <NavLink to="/dashboard">
-              <LayoutDashboard size={18} />
-              Dashboard
-            </NavLink>
-
-            <NavLink to="/workouts">
-              <Dumbbell size={18} />
-              Workouts
-            </NavLink>
-
-            <NavLink to="/progress">
-              <TrendingUp size={18} />
-              Progress
-            </NavLink>
-
-            <NavLink to="/goals">
-              <Target size={18} />
-              Goals
-            </NavLink>
-
-            <NavLink to="/reports">
-              <BarChart3 size={18} />
-              Reports
-            </NavLink>
+            {navItems.map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === "/dashboard"}
+                className={({ isActive }) =>
+                  `fittrack-sidebar-link ${isActive ? "active" : ""}`
+                }
+              >
+                <Icon size={19} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
           </nav>
+        </aside>
 
-          <div className="dashboard-header-actions">
-            <Notifications />
-
-            <button className="secondary-button" onClick={handleLogout}>
-              <LogOut size={17} />
-              Logout
-            </button>
-          </div>
-        </header>
+        <main className="fittrack-main-content">
+          <Outlet />
+        </main>
       </div>
-
-      <Outlet />
-    </>
+    </div>
   );
 }

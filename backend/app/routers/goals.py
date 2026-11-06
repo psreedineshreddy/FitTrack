@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -7,6 +8,9 @@ from app.models.user import User
 from app.models.notification import Notification
 from app.schemas.goal import GoalCreate, GoalUpdate, GoalResponse
 from app.routers.auth import get_current_user
+from app.services.badge_service import ensure_default_badges
+from app.models.badge import Badge
+from app.models.user_badge import UserBadge
 
 router = APIRouter(prefix="/api/goals", tags=["Goals"])
 
@@ -16,6 +20,26 @@ def update_goal_status(goal):
         goal.status = "COMPLETED"
     else:
         goal.status = "ACTIVE"
+
+
+def award_goal_setter_badge(db: Session, user_id: int):
+    ensure_default_badges(db)
+
+    badge = db.query(Badge).filter(
+        Badge.name == "Goal Setter"
+    ).first()
+
+    if badge:
+        existing = db.query(UserBadge).filter(
+            UserBadge.user_id == user_id,
+            UserBadge.badge_id == badge.id
+        ).first()
+
+        if not existing:
+            db.add(UserBadge(
+                user_id=user_id,
+                badge_id=badge.id
+            ))
 
 
 @router.post("/", response_model=GoalResponse)
@@ -35,8 +59,9 @@ def create_goal(
     update_goal_status(goal)
 
     db.add(goal)
-    db.commit()
-    db.refresh(goal)
+    db.flush()
+
+    award_goal_setter_badge(db, current_user.id)
 
     if goal.status == "COMPLETED":
         db.add(Notification(
@@ -44,7 +69,9 @@ def create_goal(
             title="Goal Completed",
             message=f"Congratulations! You completed your {goal.goal_type} goal."
         ))
-        db.commit()
+
+    db.commit()
+    db.refresh(goal)
 
     return goal
 
