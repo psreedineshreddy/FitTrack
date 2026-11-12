@@ -16,6 +16,9 @@ from app.models.exercise import Exercise
 from app.models.streak import Streak
 from app.models.badge import Badge
 from app.models.user_badge import UserBadge
+from app.models.meal import Meal
+from app.models.water_tracking import WaterTracking
+from app.models.reminder import Reminder
 
 from app.routers.auth import router as auth_router
 from app.routers.workouts import router as workouts_router
@@ -27,7 +30,13 @@ from app.routers.workout_plans import router as workout_plans_router
 from app.routers.exercises import router as exercises_router
 from app.routers.streaks import router as streaks_router
 from app.routers.badges import router as badges_router
-
+from app.routers.meals import router as meals_router
+from app.routers.water_tracking import router as water_router
+from app.routers.ai_suggestions import router as ai_suggestions_router
+from app.models.activity_sync import ActivitySync
+from app.routers.activity_sync import router as activity_sync_router
+from app.routers.advanced_analytics import router as advanced_analytics_router
+from app.routers.reminders import router as reminders_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -148,7 +157,12 @@ app.include_router(workout_plans_router)
 app.include_router(exercises_router)
 app.include_router(streaks_router)
 app.include_router(badges_router)
-
+app.include_router(meals_router)
+app.include_router(water_router)
+app.include_router(ai_suggestions_router)
+app.include_router(activity_sync_router)
+app.include_router(advanced_analytics_router)
+app.include_router(reminders_router)
 
 @app.get("/")
 def home():

@@ -1,4 +1,3 @@
-
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   Activity,
@@ -12,6 +11,12 @@ import {
   BookOpen,
   Flame,
   Award,
+  Apple,
+  Droplets,
+  Sparkles,
+  Timer,
+  ChartNoAxesCombined,
+  BellRing,
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
@@ -27,15 +32,25 @@ export default function MainLayout() {
   };
 
   const navItems = [
-    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/workouts", label: "Workouts", icon: Dumbbell },
-    { to: "/workout-plans", label: "Workout Plans", icon: CalendarDays },
-    { to: "/exercises", label: "Exercise Library", icon: BookOpen },
-    { to: "/progress", label: "Progress", icon: TrendingUp },
-    { to: "/goals", label: "Goals", icon: Target },
-    { to: "/streaks", label: "Streaks", icon: Flame },
-    { to: "/badges", label: "Achievements", icon: Award },
-    { to: "/reports", label: "Reports", icon: BarChart3 },
+{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+{ to: "/workouts", label: "Workouts", icon: Dumbbell },
+{ to: "/workout-timer", label: "Workout Timer", icon: Timer },
+{ to: "/workout-plans", label: "Workout Plans", icon: CalendarDays },
+{ to: "/exercises", label: "Exercise Library", icon: BookOpen },
+
+{ to: "/nutrition", label: "Nutrition", icon: Apple },
+{ to: "/water-tracker", label: "Water Tracker", icon: Droplets },
+{ to: "/reminders", label: "Reminders", icon: BellRing },
+
+{ to: "/progress", label: "Progress", icon: TrendingUp },
+{ to: "/goals", label: "Goals", icon: Target },
+{ to: "/streaks", label: "Streaks", icon: Flame },
+{ to: "/badges", label: "Achievements", icon: Award },
+
+{ to: "/reports", label: "Reports", icon: BarChart3 },
+{ to: "/advanced-analytics", label: "Advanced Analytics", icon: ChartNoAxesCombined },
+{ to: "/ai-suggestions", label: "AI Suggestions", icon: Sparkles },
+{ to: "/activity-sync", label: "Activity Sync", icon: Activity },
   ];
 
   return (

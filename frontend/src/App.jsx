@@ -14,6 +14,13 @@ import WorkoutPlans from "./pages/WorkoutPlans";
 import Exercises from "./pages/Exercises";
 import Streaks from "./pages/Streaks";
 import Badges from "./pages/Badges";
+import Nutrition from "./pages/Nutrition";
+import WaterTracker from "./pages/WaterTracker";
+import AISuggestions from "./pages/AISuggestions";
+import WorkoutTimer from "./pages/WorkoutTimer";
+import ActivitySync from "./pages/ActivitySync";
+import AdvancedAnalytics from "./pages/AdvancedAnalytics";
+import ReminderSettings from "./pages/ReminderSettings";
 
 function App() {
   return (
@@ -36,7 +43,13 @@ function App() {
                 <Route path="/streaks" element={<Streaks />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/badges" element={<Badges />} />
-                
+                <Route path="/nutrition" element={<Nutrition />} />
+                <Route path="/water-tracker" element={<WaterTracker />} />
+                <Route path="/ai-suggestions" element={<AISuggestions />} />
+                <Route path="/workout-timer" element={<WorkoutTimer />} />
+                <Route path="/activity-sync" element={<ActivitySync />} />
+                <Route path="/advanced-analytics" element={<AdvancedAnalytics />} />
+                <Route path="/reminders" element={<ReminderSettings />} />
               </Route>
             </Route>
 

@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from "react";
-import { Bell, Check } from "lucide-react";
+import { Bell } from "lucide-react";
 import api from "../services/api";
 
 export default function Notifications() {
@@ -23,13 +24,47 @@ export default function Notifications() {
     }
   };
 
+  const checkDueReminders = async () => {
+    try {
+      const now = new Date();
+      const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(
+        now.getMinutes()
+      ).padStart(2, "0")}`;
+
+      const weekday = now.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+
+      const response = await api.post("/api/reminders/check-due", null, {
+        params: {
+          current_time: currentTime,
+          weekday,
+        },
+      });
+
+      if (response.data.due_reminders?.length > 0) {
+        await fetchNotifications();
+      }
+    } catch (error) {
+      console.error("Failed to check reminders:", error);
+    }
+  };
+
   useEffect(() => {
     fetchNotifications();
+    checkDueReminders();
+
+    const interval = setInterval(() => {
+      checkDueReminders();
+    }, 15000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const markAsRead = async (id) => {
     try {
       await api.put(`/api/notifications/${id}/read`);
+
       setNotifications((previous) =>
         previous.map((notification) =>
           notification.id === id
